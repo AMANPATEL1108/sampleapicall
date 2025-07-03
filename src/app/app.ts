@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { Products } from './services/products';
+import { Component, OnInit } from '@angular/core';
+import { Product, Products } from './services/products';
+import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [NgFor], // 👈 this line enables *ngFor
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  protected title = 'sampeapicall';
+export class App implements OnInit {
+  title = 'sampleapicall';
 
-  message: string = '';
+  products: Product[] = [];
 
-  constructor(private userService: Products) {}
+  constructor(private productService: Products) {}
+
   ngOnInit() {
-    this.userService.getProducts().subscribe((data) => (this.message = data));
+    this.productService.getProducts().subscribe((response) => {
+      this.products = response.products;
+    });
   }
 }
